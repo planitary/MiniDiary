@@ -1,9 +1,13 @@
 package com.planitary.base.config;
 
+import com.planitary.base.handler.TraceIdHandler;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+@Configuration
 public class WebConfig implements WebMvcConfigurer {
     // 开启CORS
     // springboot开启CORS的方法：https://blog.csdn.net/JokerLJG/article/details/123659384
@@ -23,6 +27,11 @@ public class WebConfig implements WebMvcConfigurer {
                 // 可以根据实际需要进行更详细的配置
             }
         };
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new TraceIdHandler()).addPathPatterns("/**");
     }
 
 }

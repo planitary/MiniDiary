@@ -14,6 +14,7 @@ public enum ExceptionEnum {
     PARAMETER_ERROR("参数错误","-1002"),
     OBJECT_NULL("对象为空","-1003"),
     ENUM_NOT_EXIST("枚举不存在","-1004");
+
     private final String errMessage;
     private final String errCode;
 

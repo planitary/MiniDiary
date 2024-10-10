@@ -1,12 +1,14 @@
 package com.planitary.core.exception;
 
 import com.planitary.base.commonEnum.ExceptionEnum;
+import lombok.Getter;
 
 /**
  * @author zane
  * @date 2024-10-10 16:41:19
  * @description：自定义异常类
  */
+@Getter
 public class MDException extends RuntimeException{
     private String errCode;
 
@@ -40,7 +42,4 @@ public class MDException extends RuntimeException{
         throw new MDException(exceptionEnum.getErrMessage(),exceptionEnum.getErrCode());
     }
 
-    public String getErrCode(){
-        return this.errCode;
-    }
 }
