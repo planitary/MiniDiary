@@ -6,6 +6,8 @@
     <modules>
         <module>md-base</module>
         <module>md-controller</module>
+        <module>md-service</module>
+        <module>md-mapper</module>
     </modules>
 
     <parent>
