@@ -11,6 +11,14 @@
 
     <groupId>com.zane</groupId>
     <artifactId>md-controller</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>com.zane</groupId>
+            <artifactId>md-service</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 
 </project>

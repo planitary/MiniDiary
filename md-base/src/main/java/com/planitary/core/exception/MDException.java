@@ -27,14 +27,24 @@ public class MDException extends RuntimeException{
         throw new RuntimeException(message);
     }
 
-    // 自定义异常参数
+    // 完全自定义的异常参数(msg&code)
     public static void exceptionCast(String message,String code){
         throw new MDException(message,code);
     }
 
-    // 支持自定义的错误参数
+    // 自定义的异常code(仅code)
     public static void exceptionCast(ExceptionEnum exceptionEnum, String code){
         throw new MDException(exceptionEnum.getErrMessage(),code);
+    }
+
+
+    /**
+     * 自定义异常信息(仅msg)
+     * @param message               自定义异常
+     * @param exceptionEnum         系统枚举类，使用系统的枚举类code
+     */
+    public static void exceptionCast(String message,ExceptionEnum exceptionEnum){
+        throw new MDException(message,exceptionEnum.getErrCode());
     }
 
     // 系统支持的错误参数

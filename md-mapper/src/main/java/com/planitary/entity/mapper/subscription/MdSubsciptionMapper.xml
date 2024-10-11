@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.planitary.entity.mapper.subscription.MdSubscriptionMapper">
+
+    <resultMap id="BaseResultMap" type="com.planitary.entity.model.subscription.MdSubscriptionAppInfo">
+        <id column="id" property="id"/>
+        <result column="app_id" property="appId"/>
+        <result column="app_name" property="appName"/>
+        <result column="subscription_id" property="subscriptionId"/>
+        <result column="app_icon" property="appIcon"/>
+        <result column="subscription_price" property="subscriptionPrice"/>
+        <result column="subscription_date" property="subscriptionDate"/>
+        <result column="duration" property="duration"/>
+        <result column="expiration_date" property="expirationDate"/>
+        <result column="app_type" property="appType"/>
+        <result column="subscription_user_id" property="subscriptionUserId"/>
+        <result column="subscription_user_name" property="subscriptionUserName"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, app_id, app_name, subscription_id, app_icon,subscription_price,subscription_date,duration,
+        expiration_date,app_type,subscription_user_id,subscription_user_name,is_delete,create_time,update_time
+    </sql>
+
+</mapper>

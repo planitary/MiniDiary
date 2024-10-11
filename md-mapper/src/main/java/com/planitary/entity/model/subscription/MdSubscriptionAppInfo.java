@@ -1,4 +1,4 @@
-package entity.subscription;
+package com.planitary.entity.model.subscription;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
@@ -12,7 +12,8 @@ import java.math.BigDecimal;
  * 订阅APP详情
  */
 @Data
-public class SubscriptionAppInfo implements Serializable {
+@TableName("md_sub_app_info")
+public class MdSubscriptionAppInfo implements Serializable {
     @TableId(value = "id",type = IdType.AUTO)
     private Long id;
 
@@ -78,6 +79,5 @@ public class SubscriptionAppInfo implements Serializable {
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private String updateTime;
-
 
 }
