@@ -16,9 +16,10 @@ import org.springframework.stereotype.Service;
 public class MdHomeInfoServiceImpl implements MDHomeInfoService {
     @Override
     public HomeInfoDto getHomeInfoByUserId(String userId) {
-        if (userId == null){
+        if (userId == null) {
             log.error("userId为空");
             MDException.exceptionCast("userID为空", ExceptionEnum.PARAMETER_ERROR);
         }
-
+        return null;
+    }
 }
