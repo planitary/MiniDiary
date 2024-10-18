@@ -17,7 +17,7 @@ public class HomeInfoDto {
     /**
      * 记账类型-订阅项目、消费项目
      */
-    private String accountingType;
+    private List<String> accountingType;
     /**
      * 净收入、总订阅消费额
      */
