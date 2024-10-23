@@ -1,5 +1,7 @@
 package com.planitary.service.md.home;
 
+import com.planitary.entity.model.dto.GetAppInfo;
+import com.planitary.entity.model.dto.GetSubAppInfoDto;
 import com.planitary.entity.model.dto.HomeInfoDto;
 
 /**
@@ -13,5 +15,5 @@ public interface MDHomeInfoService {
      * @param userId            用户id
      * @return      HomeInfoDto
      */
-    HomeInfoDto getHomeInfoByUserId(String userId);
+    HomeInfoDto getHomeInfoByUserId(GetAppInfo getAppInfo);
 }

@@ -33,6 +33,15 @@ public class HomeInfoDto {
      * 订阅App数量
      */
     private Integer subscriptionCount;
-    private List<MdSubscriptionAppInfo> mdSubscriptionAppInfos;
+    private List<SubAppBaseInfo> mdSubscriptionAppInfos;
+    /**
+     * 消费App数量
+     */
+    private Integer consumptionCount;
+
+    /**
+     * 消费App详情
+     */
+    private List<ConsumptionAppBaseInfo> mdConsumptionAppInfos;
 
 }

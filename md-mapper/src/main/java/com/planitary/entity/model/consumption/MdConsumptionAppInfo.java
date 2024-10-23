@@ -11,6 +11,7 @@ import java.math.BigDecimal;
  * 消费App详情
  */
 @Data
+@TableName("md_con_app_info")
 public class MdConsumptionAppInfo {
     @TableId(value = "id",type = IdType.AUTO)
     private Long id;
@@ -42,6 +43,11 @@ public class MdConsumptionAppInfo {
      * 用户id
      */
     private String userId;
+
+    /**
+     * 总收入
+     */
+    private BigDecimal totalIncome;
     /**
      * 用户name
      */

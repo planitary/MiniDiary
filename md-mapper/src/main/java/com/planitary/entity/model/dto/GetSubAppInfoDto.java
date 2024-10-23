@@ -11,6 +11,7 @@ import lombok.Data;
 public class GetSubAppInfoDto {
     private String userId;
     private String subscriptionId;
+    private String accountingType;
     private String userName;
     private String appId;
 }

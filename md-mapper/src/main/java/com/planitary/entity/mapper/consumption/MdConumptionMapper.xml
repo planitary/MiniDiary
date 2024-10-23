@@ -14,6 +14,7 @@
         <result column="app_type" property="appType"/>
         <result column="user_id" property="userId"/>
         <result column="user_name" property="userName"/>
+        <result column="total_income" property="totalIncome"/>
         <result column="is_delete" property="isDelete"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
@@ -22,7 +23,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, app_id, app_name, consumption_id, app_icon,consumption_price,consumption_date,consumption_type,
+        id, app_id, app_name, consumption_id, app_icon,consumption_price,consumption_date,consumption_type,total_income,
         app_type,user_id,user_name,is_delete,create_time,update_time
     </sql>
 
