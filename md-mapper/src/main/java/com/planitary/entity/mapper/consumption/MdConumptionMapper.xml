@@ -21,10 +21,30 @@
 
     </resultMap>
 
+    <resultMap id="aggregationCostAppInfo" type="com.planitary.entity.model.dto.ConsumptionAppBaseInfo">
+        <result column="app_id" property="appId" />
+        <result column="app_icon" property="appIcon" />
+        <result column="app_name" property="appName" />
+        <result column="total_cost" property="totalCost" />
+        <result column="total_income" property="totalIncome"/>
+
+    </resultMap>
+
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, app_id, app_name, consumption_id, app_icon,consumption_price,consumption_date,consumption_type,total_income,
         app_type,user_id,user_name,is_delete,create_time,update_time
     </sql>
+
+
+    <select id="getAggregationCostAppInfo" resultMap="aggregationCostAppInfo" parameterType="String">
+        select app_id,app_name,app_icon,sum(consumption_price) total_cost from md_con_app_info
+        <where>
+            and user_id = #{userId}
+            and is_delete = 0
+        </where>
+        group by app_id,app_name,app_icon
+    </select>
 
 </mapper>

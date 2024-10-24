@@ -7,13 +7,11 @@ import com.planitary.core.exception.MDException;
 import com.planitary.entity.mapper.consumption.MdConsumptionMapper;
 import com.planitary.entity.mapper.subscription.MdSubscriptionMapper;
 import com.planitary.entity.model.consumption.MdConsumptionAppInfo;
-import com.planitary.entity.model.dto.GetAppInfo;
-import com.planitary.entity.model.dto.GetSubAppInfoDto;
-import com.planitary.entity.model.dto.HomeInfoDto;
-import com.planitary.entity.model.dto.SubAppBaseInfo;
+import com.planitary.entity.model.dto.*;
 import com.planitary.entity.model.subscription.MdSubscriptionAppInfo;
 import com.planitary.service.md.home.MDHomeInfoService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,20 +44,7 @@ public class MdHomeInfoServiceImpl implements MDHomeInfoService {
         LambdaQueryWrapper<MdConsumptionAppInfo> mdComAppInfoWrapper = new LambdaQueryWrapper<>();
         LambdaQueryWrapper<MdSubscriptionAppInfo> mdSubAppInfoWrapper = new LambdaQueryWrapper<>();
 
-        // 先查找消费组
-        mdComAppInfoWrapper.eq(MdConsumptionAppInfo::getUserId,userId);
-        List<MdConsumptionAppInfo> mdConsumptionAppInfos = mdConsumptionMapper.selectList(mdComAppInfoWrapper);
-        if (mdConsumptionAppInfos == null){
-            log.info("未找到任何结果");
-            MDException.exceptionCast(ExceptionEnum.OBJECT_NULL);
-        }
-        // 在查找订阅组
-        mdSubAppInfoWrapper.eq(MdSubscriptionAppInfo::getSubscriptionUserId,userId);
-        List<MdSubscriptionAppInfo> mdSubscriptionAppInfos = mdSubscriptionMapper.selectList(mdSubAppInfoWrapper);
-        if (mdSubscriptionAppInfos == null){
-            log.info("未找到任何结果");
-            MDException.exceptionCast(ExceptionEnum.OBJECT_NULL);
-        }
+
 
         // 聚合展示DTO
         HomeInfoDto homeInfoDto = new HomeInfoDto();
@@ -69,9 +54,17 @@ public class MdHomeInfoServiceImpl implements MDHomeInfoService {
             accountingTypeList.add(bizEnum.getBizCode());
         }
         homeInfoDto.setAccountingType(accountingTypeList);
-        // TODO: 2024/10/18 剩余DTO
         // 订阅类型：订阅总额,订阅APP价格相加
         if (Objects.equals(getAppInfo.getAccountingType(), BizEnum.SUBSCRIPTION.getBizCode())){
+
+            // 查找订阅组
+            mdSubAppInfoWrapper.eq(MdSubscriptionAppInfo::getSubscriptionUserId,userId);
+            List<MdSubscriptionAppInfo> mdSubscriptionAppInfos = mdSubscriptionMapper.selectList(mdSubAppInfoWrapper);
+            if (mdSubscriptionAppInfos == null){
+                log.info("未找到任何结果");
+                MDException.exceptionCast(ExceptionEnum.OBJECT_NULL);
+            }
+
             BigDecimal totalPrice = BigDecimal.ZERO;
             List<SubAppBaseInfo> mdSubscriptionAppInfoList = new ArrayList<>();
 
@@ -88,22 +81,32 @@ public class MdHomeInfoServiceImpl implements MDHomeInfoService {
             }
             homeInfoDto.setTotalAmounts(totalPrice);
             homeInfoDto.setMdSubscriptionAppInfos(mdSubscriptionAppInfoList);
+            homeInfoDto.setSubscriptionCount(mdSubscriptionAppInfos.size());
         }
 
         //订阅类型：消费总额，消费App相加-收入
         if (Objects.equals(getAppInfo.getAccountingType(),BizEnum.CONSUMPTION.getBizCode())){
-            BigDecimal totalCost = BigDecimal.ZERO;
-            BigDecimal totalIncome = mdConsumptionAppInfos.get(0).getTotalIncome();
-            for (MdConsumptionAppInfo mdConsumptionAppInfo : mdConsumptionAppInfos){
-                totalCost = totalCost.add(mdConsumptionAppInfo.getConsumptionPrice());
+            // 查找消费组
+            List<ConsumptionAppBaseInfo> consumptionAppBaseInfos = mdConsumptionMapper.getAggregationCostAppInfo(userId);
+            if (consumptionAppBaseInfos == null){
+                log.info("未找到任何结果");
+                MDException.exceptionCast(ExceptionEnum.OBJECT_NULL);
             }
-            // 总消费
+            BigDecimal totalCost = BigDecimal.ZERO;
+            BigDecimal totalIncome = consumptionAppBaseInfos.get(0).getTotalIncome();
+
+            for (ConsumptionAppBaseInfo consumptionAppBaseInfo : consumptionAppBaseInfos){
+                // 总消费
+                totalCost = totalCost.add(consumptionAppBaseInfo.getTotalCost());
+                consumptionAppBaseInfos.add(consumptionAppBaseInfo);
+            }
+
             homeInfoDto.setTotalCost(totalCost);
             // 净收入
             BigDecimal totalPrice = totalCost.subtract(totalIncome);
             homeInfoDto.setTotalAmounts(totalPrice);
+            homeInfoDto.setMdConsumptionAppInfos(consumptionAppBaseInfos);
         }
-        homeInfoDto.setSubscriptionCount(mdSubscriptionAppInfos.size());
         return homeInfoDto;
     }
 }

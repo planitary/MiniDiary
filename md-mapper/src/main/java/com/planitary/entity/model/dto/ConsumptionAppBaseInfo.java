@@ -16,4 +16,5 @@ public class ConsumptionAppBaseInfo {
     private String appIcon;
     private String appName;
     private BigDecimal totalCost;
+    private BigDecimal totalIncome;
 }
