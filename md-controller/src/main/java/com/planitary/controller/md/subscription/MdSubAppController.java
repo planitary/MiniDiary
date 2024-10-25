@@ -43,14 +43,5 @@ public class MdSubAppController {
         return MDResult.success(subAppInfo);
     }
 
-    @PostMapping("/core/home/getHomeInfo")
-    public MDResult<HomeInfoDto> getHomeInfoByUserId(@RequestBody GetAppInfo getAppInfo){
-        if (getAppInfo == null){
-            log.error("参数为空");
-            MDException.exceptionCast("参数为空", ExceptionEnum.PARAMETER_ERROR);
-        }
-        HomeInfoDto homeInfoByUserId = mdHomeInfoService.getHomeInfoByUserId(getAppInfo);
-        log.info("拿到聚合信息:{}",homeInfoByUserId);
-        return MDResult.success(homeInfoByUserId);
-    }
+
 }

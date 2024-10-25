@@ -16,4 +16,8 @@ public class SubAppBaseInfo {
     BigDecimal appAmount;
     String appName;
     String subscriptionTime;
+    /**
+     * app中文名称
+     */
+    private String appNameDesc;
 }

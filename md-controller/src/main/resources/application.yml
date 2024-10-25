@@ -10,3 +10,5 @@ spring:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  type-aliases-package: com.planitary.entity.mapper
+  mapper-locations: classpath*:mapper/**/*Mapper.xml

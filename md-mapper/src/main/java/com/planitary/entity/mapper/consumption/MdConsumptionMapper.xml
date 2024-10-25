@@ -21,7 +21,7 @@
 
     </resultMap>
 
-    <resultMap id="aggregationCostAppInfo" type="com.planitary.entity.model.dto.ConsumptionAppBaseInfo">
+    <resultMap id="AggregationCostAppInfo" type="com.planitary.entity.model.dto.ConsumptionAppBaseInfo">
         <result column="app_id" property="appId" />
         <result column="app_icon" property="appIcon" />
         <result column="app_name" property="appName" />
@@ -38,13 +38,13 @@
     </sql>
 
 
-    <select id="getAggregationCostAppInfo" resultMap="aggregationCostAppInfo" parameterType="String">
-        select app_id,app_name,app_icon,sum(consumption_price) total_cost from md_con_app_info
+    <select id="getAggregationCostAppInfo" resultMap="AggregationCostAppInfo" parameterType="String">
+        select app_id,app_name,app_icon,sum(consumption_price) total_cost,total_income from md_con_app_info
         <where>
             and user_id = #{userId}
             and is_delete = 0
         </where>
-        group by app_id,app_name,app_icon
+        group by app_id,app_name,app_icon,total_income
     </select>
 
 </mapper>

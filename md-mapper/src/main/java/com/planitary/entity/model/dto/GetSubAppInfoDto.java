@@ -14,4 +14,5 @@ public class GetSubAppInfoDto {
     private String accountingType;
     private String userName;
     private String appId;
+
 }

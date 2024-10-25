@@ -1,6 +1,7 @@
 package com.planitary.service.md.home.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.planitary.base.commonEnum.AppEnum;
 import com.planitary.base.commonEnum.BizEnum;
 import com.planitary.base.commonEnum.ExceptionEnum;
 import com.planitary.core.exception.MDException;
@@ -78,6 +79,9 @@ public class MdHomeInfoServiceImpl implements MDHomeInfoService {
                 subAppBaseInfo.setAppName(mdSubscriptionAppInfo.getAppName());
                 subAppBaseInfo.setSubscriptionTime(mdSubscriptionAppInfo.getSubscriptionDate());
                 mdSubscriptionAppInfoList.add(subAppBaseInfo);
+                // 获取app的中文名称
+                String appNameDesc = this.getAppNameDesc(mdSubscriptionAppInfo.getAppName());
+                subAppBaseInfo.setAppNameDesc(appNameDesc);
             }
             homeInfoDto.setTotalAmounts(totalPrice);
             homeInfoDto.setMdSubscriptionAppInfos(mdSubscriptionAppInfoList);
@@ -98,15 +102,29 @@ public class MdHomeInfoServiceImpl implements MDHomeInfoService {
             for (ConsumptionAppBaseInfo consumptionAppBaseInfo : consumptionAppBaseInfos){
                 // 总消费
                 totalCost = totalCost.add(consumptionAppBaseInfo.getTotalCost());
-                consumptionAppBaseInfos.add(consumptionAppBaseInfo);
+                // app中文名称
+                String appNameDesc = this.getAppNameDesc(consumptionAppBaseInfo.getAppName());
+                consumptionAppBaseInfo.setAppNameDesc(appNameDesc);
             }
 
             homeInfoDto.setTotalCost(totalCost);
             // 净收入
-            BigDecimal totalPrice = totalCost.subtract(totalIncome);
+            BigDecimal totalPrice = totalIncome.subtract(totalCost);
             homeInfoDto.setTotalAmounts(totalPrice);
             homeInfoDto.setMdConsumptionAppInfos(consumptionAppBaseInfos);
         }
         return homeInfoDto;
     }
+
+
+    private String getAppNameDesc(String code){
+        try {
+            AppEnum appEnum = AppEnum.getTypeByCode(code);
+            return appEnum.getBizType();
+        }catch (MDException e){
+            log.error(e.getMessage());
+        }
+        return null;
+    }
+
 }

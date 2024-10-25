@@ -5,6 +5,7 @@ import lombok.Getter;
 /**
  * @author zane
  * @date 2024-10-18 18:09:33
+ * @description   业务内筒
  */
 @Getter
 public enum BizEnum {
