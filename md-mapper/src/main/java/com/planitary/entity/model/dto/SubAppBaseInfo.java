@@ -13,9 +13,9 @@ import java.math.BigDecimal;
 public class SubAppBaseInfo {
     String appId;
     String appIcon;
-    BigDecimal appAmount;
+    BigDecimal subscriptionPrice;
     String appName;
-    String subscriptionTime;
+    String subscriptionDate;
     /**
      * app中文名称
      */

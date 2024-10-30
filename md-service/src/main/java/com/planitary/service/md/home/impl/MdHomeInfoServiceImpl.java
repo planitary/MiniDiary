@@ -73,11 +73,11 @@ public class MdHomeInfoServiceImpl implements MDHomeInfoService {
                 // 订阅app基本信息
                 SubAppBaseInfo subAppBaseInfo = new SubAppBaseInfo();
                 totalPrice = totalPrice.add(mdSubscriptionAppInfo.getSubscriptionPrice());
-                subAppBaseInfo.setAppAmount(mdSubscriptionAppInfo.getSubscriptionPrice());
+                subAppBaseInfo.setSubscriptionPrice(mdSubscriptionAppInfo.getSubscriptionPrice());
                 subAppBaseInfo.setAppId(mdSubscriptionAppInfo.getAppId());
                 subAppBaseInfo.setAppIcon(mdSubscriptionAppInfo.getAppIcon());
                 subAppBaseInfo.setAppName(mdSubscriptionAppInfo.getAppName());
-                subAppBaseInfo.setSubscriptionTime(mdSubscriptionAppInfo.getSubscriptionDate());
+                subAppBaseInfo.setSubscriptionDate(mdSubscriptionAppInfo.getSubscriptionDate());
                 mdSubscriptionAppInfoList.add(subAppBaseInfo);
                 // 获取app的中文名称
                 String appNameDesc = this.getAppNameDesc(mdSubscriptionAppInfo.getAppName());
