@@ -1,5 +1,7 @@
 package com.planitary.entity.model.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.planitary.base.handler.CustomBigDecimalSerializer;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -13,6 +15,7 @@ import java.math.BigDecimal;
 public class SubAppBaseInfo {
     String appId;
     String appIcon;
+    @JsonSerialize(using = CustomBigDecimalSerializer.class)
     BigDecimal subscriptionPrice;
     String appName;
     String subscriptionDate;

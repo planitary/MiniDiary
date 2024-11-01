@@ -53,12 +53,12 @@
             <version>${javax.servlet-api.version}</version>
             <scope>provided</scope>
         </dependency>
-        <!-- fastjson ，json解析工具 -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
-        </dependency>
+<!--        &lt;!&ndash; fastjson ，json解析工具 &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId></groupId>-->
+<!--            <artifactId>jackson</artifactId>-->
+<!--            <version></version>-->
+<!--        </dependency>-->
 
         <!-- mySQL数据库驱动包管理 -->
         <dependency>

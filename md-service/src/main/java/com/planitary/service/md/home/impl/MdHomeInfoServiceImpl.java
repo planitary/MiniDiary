@@ -112,6 +112,7 @@ public class MdHomeInfoServiceImpl implements MDHomeInfoService {
             BigDecimal totalPrice = totalIncome.subtract(totalCost);
             homeInfoDto.setTotalAmounts(totalPrice);
             homeInfoDto.setMdConsumptionAppInfos(consumptionAppBaseInfos);
+            log.info("homeInfoDto:{}",homeInfoDto);
         }
         return homeInfoDto;
     }

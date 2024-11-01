@@ -1,5 +1,7 @@
 package com.planitary.entity.model.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.planitary.base.handler.CustomBigDecimalSerializer;
 import lombok.Data;
 
 import javax.sql.rowset.serial.SerialStruct;
@@ -15,7 +17,9 @@ public class ConsumptionAppBaseInfo {
     private String appId;
     private String appIcon;
     private String appName;
+    @JsonSerialize(using = CustomBigDecimalSerializer.class)
     private BigDecimal totalCost;
+    @JsonSerialize(using = CustomBigDecimalSerializer.class)
     private BigDecimal totalIncome;
     /**
      * app中文名称

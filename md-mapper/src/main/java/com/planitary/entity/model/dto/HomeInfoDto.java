@@ -1,5 +1,7 @@
 package com.planitary.entity.model.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.planitary.base.handler.CustomBigDecimalSerializer;
 import com.planitary.entity.model.subscription.MdSubscriptionAppInfo;
 import lombok.Data;
 
@@ -21,10 +23,12 @@ public class HomeInfoDto {
     /**
      * 净收入、总订阅消费额
      */
+    @JsonSerialize(using = CustomBigDecimalSerializer.class)
     private BigDecimal totalAmounts;
     /**
      * 总支出
      */
+    @JsonSerialize(using = CustomBigDecimalSerializer.class)
     private BigDecimal totalCost;
     private String currentYear;
     private String currentMonth;
