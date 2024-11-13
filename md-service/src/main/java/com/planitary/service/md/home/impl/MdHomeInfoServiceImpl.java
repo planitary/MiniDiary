@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -115,6 +116,22 @@ public class MdHomeInfoServiceImpl implements MDHomeInfoService {
             log.info("homeInfoDto:{}",homeInfoDto);
         }
         return homeInfoDto;
+    }
+
+    @Override
+    @Transactional
+    public String addBill(AddBillBaseDTO addBillBaseDTO) {
+        //校验用户id
+        String userId = addBillBaseDTO.getUserId();
+        if (Objects.equals(userId,null)){
+            log.error("用户id为空");
+            MDException.exceptionCast(ExceptionEnum.SYSTEM_ERROR);
+        }
+        // 收入记账
+        if (Objects.equals(addBillBaseDTO.getAppType(), "INCOME")){
+
+        }
+        return "1";
     }
 
 
