@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.planitary.entity.mapper.income.MdIncomeAppMapper">
+
+    <resultMap id="BaseResultMap" type="com.planitary.entity.model.income.IncomeAppInfo">
+        <id column="id" property="id"/>
+        <result column="app_id" property="appId"/>
+        <result column="app_name" property="appName"/>
+        <result column="income_record_id" property="incomeRecordId"/>
+        <result column="app_icon" property="appIcon"/>
+        <result column="income_date" property="incomeDate"/>
+        <result column="income_price" property="incomePrice"/>
+        <result column="income_type" property="incomeType"/>
+        <result column="app_type" property="appType"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+
+    </resultMap>
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, app_id, app_name, income_record_id, app_icon,income_date,income_price,income_type,
+        app_type,user_id,user_name,is_delete,create_time,update_time
+    </sql>
+
+
+</mapper>

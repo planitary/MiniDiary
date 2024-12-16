@@ -4,6 +4,7 @@ import com.planitary.entity.model.dto.AddBillBaseDTO;
 import com.planitary.entity.model.dto.GetAppInfo;
 import com.planitary.entity.model.dto.GetSubAppInfoDto;
 import com.planitary.entity.model.dto.HomeInfoDto;
+import com.planitary.entity.model.income.IncomeAppInfo;
 
 /**
  * @author zane
@@ -17,6 +18,13 @@ public interface MDHomeInfoService {
      * @return      HomeInfoDto
      */
     HomeInfoDto getHomeInfoByUserId(GetAppInfo getAppInfo);
+
+    /**
+     * 通过userId查询用户收入信息
+     * @param getAppInfo
+     * @return
+     */
+    IncomeAppInfo getIncomeInfoByRecordId(GetAppInfo getAppInfo);
 
     /**
      * 新增记账

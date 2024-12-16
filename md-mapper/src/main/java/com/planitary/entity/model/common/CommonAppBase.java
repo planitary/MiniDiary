@@ -15,7 +15,6 @@ public class CommonAppBase {
     private String appName;
     private String appIcon;
     private String userId;
-    private BigDecimal incomeAmount;
-    private String incomeDate;
-    private String billType;
+    private String userName;
+    private String appType;
 }

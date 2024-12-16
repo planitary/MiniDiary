@@ -6,9 +6,11 @@ import com.planitary.base.commonEnum.BizEnum;
 import com.planitary.base.commonEnum.ExceptionEnum;
 import com.planitary.core.exception.MDException;
 import com.planitary.entity.mapper.consumption.MdConsumptionMapper;
+import com.planitary.entity.mapper.income.MdIncomeAppMapper;
 import com.planitary.entity.mapper.subscription.MdSubscriptionMapper;
 import com.planitary.entity.model.consumption.MdConsumptionAppInfo;
 import com.planitary.entity.model.dto.*;
+import com.planitary.entity.model.income.IncomeAppInfo;
 import com.planitary.entity.model.subscription.MdSubscriptionAppInfo;
 import com.planitary.service.md.home.MDHomeInfoService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +38,8 @@ public class MdHomeInfoServiceImpl implements MDHomeInfoService {
     @Autowired
     MdSubscriptionMapper mdSubscriptionMapper;
 
+    @Autowired
+    MdIncomeAppMapper mdIncomeAppMapper;
     @Override
     public HomeInfoDto getHomeInfoByUserId(GetAppInfo getAppInfo) {
         String userId = getAppInfo.getUserId();
@@ -43,10 +47,7 @@ public class MdHomeInfoServiceImpl implements MDHomeInfoService {
             log.error("userId为空");
             MDException.exceptionCast("userID为空", ExceptionEnum.PARAMETER_ERROR);
         }
-        LambdaQueryWrapper<MdConsumptionAppInfo> mdComAppInfoWrapper = new LambdaQueryWrapper<>();
         LambdaQueryWrapper<MdSubscriptionAppInfo> mdSubAppInfoWrapper = new LambdaQueryWrapper<>();
-
-
 
         // 聚合展示DTO
         HomeInfoDto homeInfoDto = new HomeInfoDto();
@@ -116,6 +117,24 @@ public class MdHomeInfoServiceImpl implements MDHomeInfoService {
             log.info("homeInfoDto:{}",homeInfoDto);
         }
         return homeInfoDto;
+    }
+
+    @Override
+    public IncomeAppInfo getIncomeInfoByRecordId(GetAppInfo getAppInfo) {
+        String recordId = getAppInfo.getRecordId();
+        if (recordId == null) {
+            log.error("recordId为空");
+            MDException.exceptionCast("数据异常", ExceptionEnum.DATA_ERROR);
+        }
+        LambdaQueryWrapper<IncomeAppInfo> incomeAppInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        incomeAppInfoLambdaQueryWrapper.eq(IncomeAppInfo::getIncomeRecordId,recordId);
+        IncomeAppInfo incomeAppInfo = mdIncomeAppMapper.selectOne(incomeAppInfoLambdaQueryWrapper);
+        if (incomeAppInfo == null){
+            log.error("找不到recordId-{}对应的目标",recordId);
+            MDException.exceptionCast(ExceptionEnum.OBJECT_NULL);
+        }
+        log.info("找到对象id,{}",incomeAppInfo.getId());
+        return incomeAppInfo;
     }
 
     @Override
