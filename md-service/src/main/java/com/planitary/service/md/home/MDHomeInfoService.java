@@ -20,11 +20,11 @@ public interface MDHomeInfoService {
     HomeInfoDto getHomeInfoByUserId(GetAppInfo getAppInfo);
 
     /**
-     * 通过userId查询用户收入信息
+     * 通过recordId查询单笔收入信息
      * @param getAppInfo
      * @return
      */
-    IncomeAppInfo getIncomeInfoByRecordId(GetAppInfo getAppInfo);
+    IncomeAppInfo getIncomeInfoByRecordId(String recordId);
 
     /**
      * 新增记账

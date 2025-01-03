@@ -5,12 +5,16 @@ import com.planitary.core.customResult.MDResult;
 import com.planitary.core.exception.MDException;
 import com.planitary.entity.model.dto.GetAppInfo;
 import com.planitary.entity.model.dto.HomeInfoDto;
+import com.planitary.entity.model.income.IncomeAppInfo;
 import com.planitary.service.md.home.MDHomeInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author zane
@@ -32,5 +36,18 @@ public class MdHomeController {
         HomeInfoDto homeInfoByUserId = mdHomeInfoService.getHomeInfoByUserId(getAppInfo);
         log.info("拿到聚合信息:{}",homeInfoByUserId);
         return MDResult.success(homeInfoByUserId);
+    }
+    @PostMapping("/core/home/getIncomeInfo")
+    public MDResult<IncomeAppInfo> getIncomeInfoByRecordId(@RequestBody Map<String, Object> requestBody){
+        String recordId = (String) requestBody.get("recordId");
+        if (recordId == null){
+            log.error("参数为空");
+            MDException.exceptionCast("参数为空",ExceptionEnum.PARAMETER_ERROR);
+        }
+        IncomeAppInfo incomeAppInfo = mdHomeInfoService.getIncomeInfoByRecordId(recordId);
+        if (incomeAppInfo != null){
+            log.info("拿到income信息:{}",incomeAppInfo);
+        }
+        return MDResult.success(incomeAppInfo);
     }
 }

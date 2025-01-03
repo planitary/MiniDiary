@@ -13,6 +13,7 @@ import java.math.BigDecimal;
  * @date 2024-12-16 17:02:38
  */
 @EqualsAndHashCode(callSuper = true)
+@TableName("md_income_app_info")
 @Data
 public class IncomeAppInfo extends CommonAppBase implements Serializable {
     @TableId(value = "id",type = IdType.AUTO)

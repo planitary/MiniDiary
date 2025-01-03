@@ -120,8 +120,7 @@ public class MdHomeInfoServiceImpl implements MDHomeInfoService {
     }
 
     @Override
-    public IncomeAppInfo getIncomeInfoByRecordId(GetAppInfo getAppInfo) {
-        String recordId = getAppInfo.getRecordId();
+    public IncomeAppInfo getIncomeInfoByRecordId(String recordId) {
         if (recordId == null) {
             log.error("recordId为空");
             MDException.exceptionCast("数据异常", ExceptionEnum.DATA_ERROR);
