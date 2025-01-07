@@ -5,6 +5,7 @@ import com.planitary.core.customResult.MDResult;
 import com.planitary.core.exception.MDException;
 import com.planitary.entity.model.dto.GetAppInfo;
 import com.planitary.entity.model.dto.HomeInfoDto;
+import com.planitary.entity.model.dto.IncomeBaseAppInfo;
 import com.planitary.entity.model.income.IncomeAppInfo;
 import com.planitary.service.md.home.MDHomeInfoService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.PushBuilder;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -49,5 +52,12 @@ public class MdHomeController {
             log.info("拿到income信息:{}",incomeAppInfo);
         }
         return MDResult.success(incomeAppInfo);
+    }
+
+    @PostMapping("/core/home/getIncomeInfoByUserId")
+    public MDResult<List<IncomeBaseAppInfo>> getIncomeInfos(@RequestBody Map<String,Object> requestBody){
+        String userId = (String) requestBody.get("userId");
+        List<IncomeBaseAppInfo> incomeInfoByUserId = mdHomeInfoService.getIncomeInfoByUserId(userId);
+        return MDResult.success(incomeInfoByUserId);
     }
 }

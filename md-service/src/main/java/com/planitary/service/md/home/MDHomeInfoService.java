@@ -1,10 +1,10 @@
 package com.planitary.service.md.home;
 
-import com.planitary.entity.model.dto.AddBillBaseDTO;
-import com.planitary.entity.model.dto.GetAppInfo;
-import com.planitary.entity.model.dto.GetSubAppInfoDto;
-import com.planitary.entity.model.dto.HomeInfoDto;
+import com.planitary.entity.model.dto.*;
 import com.planitary.entity.model.income.IncomeAppInfo;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author zane
@@ -20,11 +20,14 @@ public interface MDHomeInfoService {
     HomeInfoDto getHomeInfoByUserId(GetAppInfo getAppInfo);
 
     /**
-     * 通过recordId查询单笔收入信息
+     * 通过recordId查询单笔收入信息（内部调用）
      * @param getAppInfo
      * @return
      */
     IncomeAppInfo getIncomeInfoByRecordId(String recordId);
+
+    // 临时测试，展示聚合结果
+    List<IncomeBaseAppInfo> getIncomeInfoByUserId(String userId);
 
     /**
      * 新增记账

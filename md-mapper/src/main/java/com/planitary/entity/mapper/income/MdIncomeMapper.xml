@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.planitary.entity.mapper.income.MdIncomeAppMapper">
+<mapper namespace="com.planitary.entity.mapper.income.MdIncomeMapper">
 
     <resultMap id="BaseResultMap" type="com.planitary.entity.model.income.IncomeAppInfo">
         <id column="id" property="id"/>
@@ -20,12 +20,32 @@
 
     </resultMap>
 
+    <resultMap id="AggregationIncomeInfo" type="com.planitary.entity.model.dto.IncomeBaseAppInfo">
+        <result column="app_id" property="appId" />
+        <result column="app_name" property="appName"/>
+        <result column="app_icon" property="appIcon"/>
+        <result column="total_income" property="totalIncome"/>
+        <result column="income_type" property="incomeType" />
+    </resultMap>
+
+
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, app_id, app_name, income_record_id, app_icon,income_date,income_price,income_type,
         app_type,user_id,user_name,is_delete,create_time,update_time
     </sql>
+
+
+<!--    聚合查询收入-->
+    <select id="getAggregationIncomeInfo" resultMap="AggregationIncomeInfo" parameterType="String">
+        select app_id,app_name,app_icon,income_type,sum(income_price) total_income from md_income_app_info
+        <where>
+            and user_id = #{userId}
+            and is_delete = 0
+        </where>
+        group by app_id,app_name,app_icon,income_type;
+    </select>
 
 
 </mapper>

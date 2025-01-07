@@ -6,15 +6,13 @@ import com.planitary.base.commonEnum.BizEnum;
 import com.planitary.base.commonEnum.ExceptionEnum;
 import com.planitary.core.exception.MDException;
 import com.planitary.entity.mapper.consumption.MdConsumptionMapper;
-import com.planitary.entity.mapper.income.MdIncomeAppMapper;
+import com.planitary.entity.mapper.income.MdIncomeMapper;
 import com.planitary.entity.mapper.subscription.MdSubscriptionMapper;
-import com.planitary.entity.model.consumption.MdConsumptionAppInfo;
 import com.planitary.entity.model.dto.*;
 import com.planitary.entity.model.income.IncomeAppInfo;
 import com.planitary.entity.model.subscription.MdSubscriptionAppInfo;
 import com.planitary.service.md.home.MDHomeInfoService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +37,7 @@ public class MdHomeInfoServiceImpl implements MDHomeInfoService {
     MdSubscriptionMapper mdSubscriptionMapper;
 
     @Autowired
-    MdIncomeAppMapper mdIncomeAppMapper;
+    MdIncomeMapper mdIncomeMapper;
     @Override
     public HomeInfoDto getHomeInfoByUserId(GetAppInfo getAppInfo) {
         String userId = getAppInfo.getUserId();
@@ -91,30 +89,30 @@ public class MdHomeInfoServiceImpl implements MDHomeInfoService {
         }
 
         //订阅类型：消费总额，消费App相加-收入
-        if (Objects.equals(getAppInfo.getAccountingType(),BizEnum.CONSUMPTION.getBizCode())){
+        if (Objects.equals(getAppInfo.getAccountingType(),BizEnum.CONSUMPTION.getBizCode())) {
             // 查找消费组
             List<ConsumptionAppBaseInfo> consumptionAppBaseInfos = mdConsumptionMapper.getAggregationCostAppInfo(userId);
-            if (consumptionAppBaseInfos == null){
+            if (consumptionAppBaseInfos == null) {
                 log.info("未找到任何结果");
-                MDException.exceptionCast(ExceptionEnum.OBJECT_NULL);
-            }
-            BigDecimal totalCost = BigDecimal.ZERO;
-            BigDecimal totalIncome = consumptionAppBaseInfos.get(0).getTotalIncome();
+//                MDException.exceptionCast(ExceptionEnum.OBJECT_NULL);
+            } else {
+                BigDecimal totalCost = BigDecimal.ZERO;
+                BigDecimal totalIncome = consumptionAppBaseInfos.get(0).getTotalIncome();
+                for (ConsumptionAppBaseInfo consumptionAppBaseInfo : consumptionAppBaseInfos) {
+                    // 总消费
+                    totalCost = totalCost.add(consumptionAppBaseInfo.getTotalCost());
+                    // app中文名称
+                    String appNameDesc = this.getAppNameDesc(consumptionAppBaseInfo.getAppName());
+                    consumptionAppBaseInfo.setAppNameDesc(appNameDesc);
+                }
 
-            for (ConsumptionAppBaseInfo consumptionAppBaseInfo : consumptionAppBaseInfos){
-                // 总消费
-                totalCost = totalCost.add(consumptionAppBaseInfo.getTotalCost());
-                // app中文名称
-                String appNameDesc = this.getAppNameDesc(consumptionAppBaseInfo.getAppName());
-                consumptionAppBaseInfo.setAppNameDesc(appNameDesc);
+                homeInfoDto.setTotalCost(totalCost);
+                // 净收入
+                BigDecimal totalPrice = totalIncome.subtract(totalCost);
+                homeInfoDto.setTotalAmounts(totalPrice);
+                homeInfoDto.setMdConsumptionAppInfos(consumptionAppBaseInfos);
+                log.info("homeInfoDto:{}", homeInfoDto);
             }
-
-            homeInfoDto.setTotalCost(totalCost);
-            // 净收入
-            BigDecimal totalPrice = totalIncome.subtract(totalCost);
-            homeInfoDto.setTotalAmounts(totalPrice);
-            homeInfoDto.setMdConsumptionAppInfos(consumptionAppBaseInfos);
-            log.info("homeInfoDto:{}",homeInfoDto);
         }
         return homeInfoDto;
     }
@@ -127,13 +125,27 @@ public class MdHomeInfoServiceImpl implements MDHomeInfoService {
         }
         LambdaQueryWrapper<IncomeAppInfo> incomeAppInfoLambdaQueryWrapper = new LambdaQueryWrapper<>();
         incomeAppInfoLambdaQueryWrapper.eq(IncomeAppInfo::getIncomeRecordId,recordId);
-        IncomeAppInfo incomeAppInfo = mdIncomeAppMapper.selectOne(incomeAppInfoLambdaQueryWrapper);
+        IncomeAppInfo incomeAppInfo = mdIncomeMapper.selectOne(incomeAppInfoLambdaQueryWrapper);
         if (incomeAppInfo == null){
             log.error("找不到recordId-{}对应的目标",recordId);
             MDException.exceptionCast(ExceptionEnum.OBJECT_NULL);
         }
         log.info("找到对象id,{}",incomeAppInfo.getId());
         return incomeAppInfo;
+    }
+
+    // 临时测试
+    @Override
+    public List<IncomeBaseAppInfo> getIncomeInfoByUserId(String userId) {
+        if (userId == null){
+            log.error("userId为空");
+            MDException.exceptionCast("参数错误",ExceptionEnum.PARAMETER_ERROR);
+        }
+        List<IncomeBaseAppInfo> aggregationIncomeInfo = mdIncomeMapper.getAggregationIncomeInfo(userId);
+        if (aggregationIncomeInfo == null){
+            log.info("未找到任何结果");
+        }
+        return aggregationIncomeInfo;
     }
 
     @Override
