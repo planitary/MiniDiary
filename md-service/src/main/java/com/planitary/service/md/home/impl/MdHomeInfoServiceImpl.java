@@ -62,7 +62,7 @@ public class MdHomeInfoServiceImpl implements MDHomeInfoService {
             mdSubAppInfoWrapper.eq(MdSubscriptionAppInfo::getSubscriptionUserId,userId);
             List<MdSubscriptionAppInfo> mdSubscriptionAppInfos = mdSubscriptionMapper.selectList(mdSubAppInfoWrapper);
             if (mdSubscriptionAppInfos == null){
-                log.info("未找到任何结果");
+                log.info("未找到任何结果!");
                 MDException.exceptionCast(ExceptionEnum.OBJECT_NULL);
             }
 
