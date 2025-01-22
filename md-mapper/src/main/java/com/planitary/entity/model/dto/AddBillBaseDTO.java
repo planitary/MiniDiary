@@ -10,8 +10,14 @@ import lombok.Data;
  */
 @Data
 public class AddBillBaseDTO {
-    private String appType;
-    private MdConsumptionAppInfo consumptionAppInfo;
-    private MdSubscriptionAppInfo subscriptionAppInfo;
+    private String billType;
+    private String accountType;
+    private String accountingTime;
+    private String accountingType;
+    private String amount;
+    private String bank;
+    private String merchant;
+    private String remark;
+    private String sourceApp;
     private String userId;
 }

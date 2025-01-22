@@ -34,5 +34,5 @@ public interface MDHomeInfoService {
      * @param addBillBaseDTO            记账dto
      * @return
      */
-    String addBill(AddBillBaseDTO addBillBaseDTO);
+
 }

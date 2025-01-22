@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.planitary.base.commonEnum.AppEnum;
 import com.planitary.base.commonEnum.BizEnum;
 import com.planitary.base.commonEnum.ExceptionEnum;
+import com.planitary.base.utils.GlobalUniqueGenerator;
 import com.planitary.core.exception.MDException;
 import com.planitary.entity.mapper.consumption.MdConsumptionMapper;
 import com.planitary.entity.mapper.income.MdIncomeMapper;
@@ -38,6 +39,9 @@ public class MdHomeInfoServiceImpl implements MDHomeInfoService {
 
     @Autowired
     MdIncomeMapper mdIncomeMapper;
+
+    @Autowired
+    GlobalUniqueGenerator globalUniqueGenerator;
     @Override
     public HomeInfoDto getHomeInfoByUserId(GetAppInfo getAppInfo) {
         String userId = getAppInfo.getUserId();
@@ -148,21 +152,6 @@ public class MdHomeInfoServiceImpl implements MDHomeInfoService {
         return aggregationIncomeInfo;
     }
 
-    @Override
-    @Transactional
-    public String addBill(AddBillBaseDTO addBillBaseDTO) {
-        //校验用户id
-        String userId = addBillBaseDTO.getUserId();
-        if (Objects.equals(userId,null)){
-            log.error("用户id为空");
-            MDException.exceptionCast(ExceptionEnum.SYSTEM_ERROR);
-        }
-        // 收入记账
-        if (Objects.equals(addBillBaseDTO.getAppType(), "INCOME")){
-
-        }
-        return "1";
-    }
 
 
     private String getAppNameDesc(String code){

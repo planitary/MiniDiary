@@ -14,7 +14,11 @@ public enum ExceptionEnum {
     PARAMETER_ERROR("参数错误","-1002"),
     OBJECT_NULL("对象为空","-1003"),
     ENUM_NOT_EXIST("枚举不存在","-1004"),
-    DATA_ERROR("数据异常","-1005");
+    DATA_ERROR("数据异常","-1005"),
+    // 数据库操作异常
+    DB_CONNECTION_ERROR("数据库连接异常","-2000"),
+    QUERY_ERROR("数据查询异常","-2001"),
+    INSERT_ERROR("数据插入异常","-2002");
 
     private final String errMessage;
     private final String errCode;

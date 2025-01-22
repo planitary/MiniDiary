@@ -17,6 +17,8 @@
         <result column="is_delete" property="isDelete"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
+        <result column="merchant" property="merchant"/>
+        <result column="source_type" property="sourceType" />
 
     </resultMap>
 
@@ -33,7 +35,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, app_id, app_name, income_record_id, app_icon,income_date,income_price,income_type,
-        app_type,user_id,user_name,is_delete,create_time,update_time
+        app_type,user_id,user_name,is_delete,create_time,update_time,merchant,source_type;
     </sql>
 
 
