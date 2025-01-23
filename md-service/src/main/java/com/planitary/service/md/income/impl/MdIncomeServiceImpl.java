@@ -1,5 +1,6 @@
 package com.planitary.service.md.income.impl;
 
+import com.planitary.base.commonEnum.BizEnum;
 import com.planitary.base.commonEnum.ExceptionEnum;
 import com.planitary.base.utils.GlobalUniqueGenerator;
 import com.planitary.core.exception.MDException;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -39,18 +41,25 @@ public class MdIncomeServiceImpl implements MDIncomeService {
             IncomeAppInfo incomeAppInfo = new IncomeAppInfo();
             String incomeRecordId = globalUniqueGenerator.idGenerator();
             // 收入记账
-            if (Objects.equals(addBillBaseDTO.getBillType(), "1")){
+            if (Objects.equals(addBillBaseDTO.getBillType(), BizEnum.INCOME.getBizCode())){
                 //格式化amount
                 BigDecimal incomeAmount = new BigDecimal(addBillBaseDTO.getAmount());
 
                 incomeAppInfo.setAppId("88990");
                 incomeAppInfo.setAppType("INCOME");
-                if (Objects.equals(addBillBaseDTO.getAccountingType(), "生活")){
+                // 记账小类非工资
+                if (!Objects.equals(addBillBaseDTO.getAccountingType(), BizEnum.SALARY.getBizType())){
                     incomeAppInfo.setAppName(addBillBaseDTO.getSourceApp());
                     incomeAppInfo.setMerchant(addBillBaseDTO.getMerchant());
-                    incomeAppInfo.setIncomeType(addBillBaseDTO.getAccountingType());
-                    incomeAppInfo.setSourceType(addBillBaseDTO.getAccountType());
                 }
+                // 记账小类为工资
+                else {
+                    incomeAppInfo.setAppName(addBillBaseDTO.getBank());
+                    String merchantNameWithSalary = addBillBaseDTO.getMerchant();
+                    incomeAppInfo.setMerchant(merchantNameWithSalary.toUpperCase());
+                }
+                incomeAppInfo.setIncomeType(addBillBaseDTO.getAccountingType());
+                incomeAppInfo.setSourceType(addBillBaseDTO.getAccountType());
                 incomeAppInfo.setIncomePrice(incomeAmount);
                 incomeAppInfo.setIncomeDate(addBillBaseDTO.getAccountingTime());
                 incomeAppInfo.setUserId(addBillBaseDTO.getUserId());
